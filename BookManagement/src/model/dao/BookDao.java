@@ -1,5 +1,7 @@
 package model.dao;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -7,15 +9,28 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 import model.vo.Book;
 import service.JDBCTemplate;
 
 public class BookDao {
 
+	
+	private Properties prop = new Properties();
+	
+	public BookDao() {
+		try {
+			prop.loadFromXML(new FileInputStream("resources/query.xml"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 		// 1. 도서 등록
 		public int insertBook(Connection conn, Book book) {
-			String sql = "INSERT INTO TB_BOOK VALUES(SEQ_REGIST_NO.NEXTVAL, ?, ?, ?, TO_DATE(?), SYSDATE, ?, ?)";
+			String sql = prop.getProperty("insertBook");
+			
 			PreparedStatement pstmt = null;
 			int result = 0;
 			
@@ -42,9 +57,7 @@ public class BookDao {
 
 		// 2. 도서 정보 수정
 		public int updateBook(Connection conn, Book book) {
-			String sql = "UPDATE TB_BOOK "
-					     + "SET TITLE_NM = ?, AUTHOR_NM = ?, PUBLISHER = ?, PUBLISHER_DATE = TO_DATE(?), REGIST_DATE = TO_DATE(?), BOOK_CATEGORY = ?, PRICE = ?"
-					     + "WHERE REGIST_NO = ?";
+			String sql = prop.getProperty("updateBook"); 
 			PreparedStatement pstmt = null;
 			int result = 0;
 			
@@ -72,8 +85,7 @@ public class BookDao {
 		
 		// 3. 도서 정보 삭제
 		public int deleteBook(Connection conn, int regist_no) {
-			String sql = "DELETE FROM TB_BOOK "
-					     + "WHERE REGIST_NO = ?";
+			String sql = prop.getProperty("deleteBook");
 			PreparedStatement pstmt = null;
 			int result = 0;
 					
@@ -95,8 +107,7 @@ public class BookDao {
 
 		// 4. 도서 등록 번호로 조회
 		public Book selectByRegist_No(Connection conn, int regist_no) {
-			String sql = "SELECT * FROM TB_BOOK "
-					     + "WHERE REGIST_NO = ?";
+			String sql = prop.getProperty("selectByRegist_No");
 			PreparedStatement pstmt = null;
 			ResultSet rs = null;
 			Book book = null;
@@ -132,8 +143,7 @@ public class BookDao {
 
 		// 5. 도서 제목 키워드로 조회
 		public List<Book> selectByTitle_Keyword(Connection conn, String keyword) {
-			String sql = "SELECT * FROM TB_BOOK "
-					     + "WHERE TITLE_NM LIKE ('%' || ? || '%')";
+			String sql = prop.getProperty("selectByTitle_Keyword");
 			
 			PreparedStatement pstmt = null;
 			ResultSet rs = null;
@@ -175,8 +185,7 @@ public class BookDao {
 			Statement stmt = null;
 			ResultSet rs = null;
 			
-			String query = "SELECT * FROM TB_BOOK ORDER BY REGIST_NO";
-			
+			String query = prop.getProperty("SelectAllBook");
 
 			try {
 				stmt = conn.createStatement();

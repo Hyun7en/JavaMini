@@ -1,4 +1,4 @@
-package service;
+package service;//비즈니스 로직 관리
 
 import java.sql.Connection;
 import java.util.List;

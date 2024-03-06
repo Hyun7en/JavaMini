@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	<entry key="insertBook">
+	INSERT INTO TB_BOOK 
+	VALUES(SEQ_REGIST_NO.NEXTVAL, ?, ?, ?, TO_DATE(?), SYSDATE, ?, ?)
+	</entry>
+	<entry key="updateBook">
+	UPDATE TB_BOOK
+	SET TITLE_NM = ?, 
+		AUTHOR_NM = ?, 
+		PUBLISHER = ?, 
+		PUBLISHER_DATE = TO_DATE(?), 
+		REGIST_DATE = TO_DATE(?), 
+		BOOK_CATEGORY = ?, 
+		PRICE = ?
+	WHERE REGIST_NO = ?
+	</entry>
+	<entry key="deleteBook">
+	DELETE 
+	FROM TB_BOOK 
+	WHERE REGIST_NO = ?
+	</entry>
+	<entry key="selectByRegist_No">
+	SELECT * 
+	FROM TB_BOOK 
+	WHERE REGIST_NO = ?
+	</entry>
+	<entry key="selectByTitle_Keyword">
+	SELECT * 
+	FROM TB_BOOK
+	WHERE TITLE_NM LIKE ('%' || ? || '%')
+	</entry>
+	<entry key="SelectAllBook">
+	SELECT * 
+	FROM TB_BOOK 
+	ORDER BY REGIST_NO
+			
+	</entry>
+	
+</properties>
